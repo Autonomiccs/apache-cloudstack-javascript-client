@@ -149,6 +149,9 @@ var validateUserCredentials = function (userCredentials){
 	 if(!isAuthenticationUsingApiKeys && !isAuthenticationUsingUsernamePassword){
 		 throw "You should either inform the (username, password and domain) or (apiKey and secretKey).";
 	 }
+	 if(isAuthenticationUsingUsernamePassword){
+		 throw "Authentication based on username and password is not supported yet.";
+	 }
 };
 
 /**

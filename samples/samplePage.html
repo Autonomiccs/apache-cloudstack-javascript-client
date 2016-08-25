@@ -26,17 +26,29 @@
 <meta charset="UTF-8">
 </head>
 <body>
-	<form>
+	CloudStack Client URL:<br> <input type="text" id="clientUrl"><br/> <br/>
+	<div id="authenticationMethod">
+	Authentication method:  <input id="radioApiKey" type="radio" name="authMethod" value="API Keys" >API Keys
+							<input type="radio" name="authMethod" value="Credentials">Credentials<br>
+	</div>
+	<div id='apiKeysAuthentication'>
 		ApiKey:<br> <input type="text" id="apiKey"><br/>
 		SecretKey:<br> <input type="text" id="secretKey"><br/>
-		CloudStack Client URL:<br> <input type="text" id="clientUrl"><br/> <br/>
-		
+	</div>
+	<div id='credentialsAuthentication'>
+		Username:<br> <input type="text" id="username"><br/>
+		Password:<br> <input type="password" id="password"><br/>
+		Domain:<br> <input type="text" id="domain"><br/>
+	</div>
+	<br>
+	<div>
 		Command to be executed:<input type="text" id="command"><br/>
 		Command params (e.g. param1=value1&ampparam2=value2):<input type="text" id="params"><br/>
 		<input value="ExecuteRequest" type="button" id="executeRequest" /> <br/><br/><br/><br/>
 		<textarea id='result' rows="4" cols="50">Here is where the result of the request is going to be displayed.
 		</textarea> 
-	</form>
+	</div>
+	
 	<br>
 </body>
 <script src="..\src\ApacheCloudStackClient.js" type
@@ -59,13 +71,26 @@
 		var command = jQuery('#command').val();
 		var params = jQuery('#params').val();
 		
+		var username = jQuery('#username').val();
+		var password = jQuery('#password').val();
+		var domain = jQuery('#domain').val();
+		
+		Cookies.set('username', username, { expires: 7 });
+		Cookies.set('password', password, { expires: 7 });
+		Cookies.set('domain', domain, { expires: 7 });
+		
 		Cookies.set('secretKey', secretKey, { expires: 7 });
 		Cookies.set('apiKey', apiKey, { expires: 7 });
 		Cookies.set('clientUrl', clientUrl, { expires: 7 });
 		Cookies.set('command', command, { expires: 7 });
 		Cookies.set('params', params, { expires: 7 });
 		
-		var apacheCloudStackClient = autonomiccs.createApacheCloudStackClient(clientUrl, {apiKey: apiKey, secretKey: secretKey});
+		var userCredentials = {apiKey: apiKey, secretKey: secretKey};
+		if(jQuery('input[name=authMethod]:checked').val() == 'Credentials' ){
+			userCredentials = {username: username, password: password, domain: domain };
+		}
+		var apacheCloudStackClient = autonomiccs.createApacheCloudStackClient(clientUrl, userCredentials);
+		
 		var apacheCloudStackRequest = autonomiccs.createApacheCloudStackRequest(command);
 		for(let paramString of params.split('&')){
 			let parameter = paramString.split('=');
@@ -76,7 +101,20 @@
 		var result = apacheCloudStackClient.executeRequestGetJson(apacheCloudStackRequest);
 		jQuery('#result').val(JSON.stringify(result));
 	};
-	jQuery ('#executeRequest').click(executeRequest);
+	jQuery('#executeRequest').click(executeRequest);
+	jQuery('input[name=authMethod]').click(
+		function (){
+			if('Credentials' == jQuery(this).val()){
+				jQuery('#apiKeysAuthentication').hide();
+				jQuery('#credentialsAuthentication').show();
+				return;
+			}
+			jQuery('#apiKeysAuthentication').show();
+			jQuery('#credentialsAuthentication').hide();
+			return;
+		}
+	);
+	jQuery('#radioApiKey').click();
  </script>
 </html>
 

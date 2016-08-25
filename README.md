@@ -20,7 +20,7 @@ You can find examples on how to use the framework at <a href="https://github.com
 		var result = apacheCloudStackClient.executeRequestGetJson(apacheCloudStackRequest);
 ```
 
-The response is a JSON string. If you want, you can use the `JSON.parse` function to create a JSON object.
+The response is a JSON object. Therefore, you can get the result object and start using it right away. There is also another option `autonomiccs.executeRequest` that returns an XML as a response object.
 
 The framework uses the following libraries:
 * <a href="https://code.jquery.com/jquery-3.1.0.min.js" >jquery-3.1.0</a>
