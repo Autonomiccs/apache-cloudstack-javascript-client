@@ -1,0 +1,82 @@
+<!--
+ Apache CloudStack Javascript Client
+ 
+ Copyright (C) 2016 Autonomiccs, Inc.
+
+ Licensed to the Autonomiccs, Inc. under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership. The Autonomiccs, Inc. licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<form>
+		ApiKey:<br> <input type="text" id="apiKey"><br/>
+		SecretKey:<br> <input type="text" id="secretKey"><br/>
+		CloudStack Client URL:<br> <input type="text" id="clientUrl"><br/> <br/>
+		
+		Command to be executed:<input type="text" id="command"><br/>
+		Command params (e.g. param1=value1&ampparam2=value2):<input type="text" id="params"><br/>
+		<input value="ExecuteRequest" type="button" id="executeRequest" /> <br/><br/><br/><br/>
+		<textarea id='result' rows="4" cols="50">Here is where the result of the request is going to be displayed.
+		</textarea> 
+	</form>
+	<br>
+</body>
+<script src="..\src\ApacheCloudStackClient.js" type
+="text/javascript"></script>
+<script src="http://files.autonomiccs.com.br/javascripts/jsSHA-2.2.0/sha1.js" type="text/javascript"></script>
+<script src="http://files.autonomiccs.com.br/javascripts/moment-2.14.1/moment-with-locales.min.js" type="text/javascript"></script>
+<script src="http://files.autonomiccs.com.br/javascripts/js-cookie-2.1.2/js.cookie.js" type="text/javascript"></script>
+<script src="http://files.autonomiccs.com.br/javascripts/jquery-3.1.0/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+	jQuery('#secretKey').val(Cookies.get('secretKey')); 
+	jQuery('#apiKey').val(Cookies.get('apiKey')); 
+	jQuery('#clientUrl').val(Cookies.get('clientUrl')); 
+	jQuery('#command').val(Cookies.get('command')); 
+	jQuery('#params').val(Cookies.get('params')); 
+	
+	var executeRequest = function (){
+		var secretKey = jQuery('#secretKey').val();
+		var apiKey = jQuery('#apiKey').val();
+		var clientUrl = jQuery('#clientUrl').val();
+		var command = jQuery('#command').val();
+		var params = jQuery('#params').val();
+		
+		Cookies.set('secretKey', secretKey, { expires: 7 });
+		Cookies.set('apiKey', apiKey, { expires: 7 });
+		Cookies.set('clientUrl', clientUrl, { expires: 7 });
+		Cookies.set('command', command, { expires: 7 });
+		Cookies.set('params', params, { expires: 7 });
+		
+		var apacheCloudStackClient = autonomiccs.createApacheCloudStackClient(clientUrl, {apiKey: apiKey, secretKey: secretKey});
+		var apacheCloudStackRequest = autonomiccs.createApacheCloudStackRequest(command);
+		for(let paramString of params.split('&')){
+			let parameter = paramString.split('=');
+			apacheCloudStackRequest.addParameter(parameter[0], parameter[1]);
+		}
+		
+		jQuery('#result').val('Executing request....');
+		var result = apacheCloudStackClient.executeRequestGetJson(apacheCloudStackRequest);
+		jQuery('#result').val(JSON.stringify(result));
+	};
+	jQuery ('#executeRequest').click(executeRequest);
+ </script>
+</html>
+
