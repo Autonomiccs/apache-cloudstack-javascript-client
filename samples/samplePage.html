@@ -27,18 +27,9 @@
 </head>
 <body>
 	CloudStack Client URL:<br> <input type="text" id="clientUrl"><br/> <br/>
-	<div id="authenticationMethod">
-	Authentication method:  <input id="radioApiKey" type="radio" name="authMethod" value="API Keys" >API Keys
-							<input type="radio" name="authMethod" value="Credentials">Credentials<br>
-	</div>
 	<div id='apiKeysAuthentication'>
 		ApiKey:<br> <input type="text" id="apiKey"><br/>
 		SecretKey:<br> <input type="text" id="secretKey"><br/>
-	</div>
-	<div id='credentialsAuthentication'>
-		Username:<br> <input type="text" id="username"><br/>
-		Password:<br> <input type="password" id="password"><br/>
-		Domain:<br> <input type="text" id="domain"><br/>
 	</div>
 	<br>
 	<div>
@@ -70,15 +61,7 @@
 		var clientUrl = jQuery('#clientUrl').val();
 		var command = jQuery('#command').val();
 		var params = jQuery('#params').val();
-		
-		var username = jQuery('#username').val();
-		var password = jQuery('#password').val();
-		var domain = jQuery('#domain').val();
-		
-		Cookies.set('username', username, { expires: 7 });
-		Cookies.set('password', password, { expires: 7 });
-		Cookies.set('domain', domain, { expires: 7 });
-		
+			
 		Cookies.set('secretKey', secretKey, { expires: 7 });
 		Cookies.set('apiKey', apiKey, { expires: 7 });
 		Cookies.set('clientUrl', clientUrl, { expires: 7 });
@@ -86,9 +69,6 @@
 		Cookies.set('params', params, { expires: 7 });
 		
 		var userCredentials = {apiKey: apiKey, secretKey: secretKey};
-		if(jQuery('input[name=authMethod]:checked').val() == 'Credentials' ){
-			userCredentials = {username: username, password: password, domain: domain };
-		}
 		var apacheCloudStackClient = autonomiccs.createApacheCloudStackClient(clientUrl, userCredentials);
 		
 		var apacheCloudStackRequest = autonomiccs.createApacheCloudStackRequest(command);
@@ -102,19 +82,7 @@
 		jQuery('#result').val(JSON.stringify(result));
 	};
 	jQuery('#executeRequest').click(executeRequest);
-	jQuery('input[name=authMethod]').click(
-		function (){
-			if('Credentials' == jQuery(this).val()){
-				jQuery('#apiKeysAuthentication').hide();
-				jQuery('#credentialsAuthentication').show();
-				return;
-			}
-			jQuery('#apiKeysAuthentication').show();
-			jQuery('#credentialsAuthentication').hide();
-			return;
-		}
-	);
-	jQuery('#radioApiKey').click();
+	
  </script>
 </html>
 

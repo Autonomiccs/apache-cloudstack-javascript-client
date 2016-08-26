@@ -137,20 +137,16 @@ var executeRequestToCloudSTack = function (apacheCloudStackRequest, apacheCloudS
 
  /**
  * It validates the userCredentials. 
- * We check if it was provided either username, password and domain or apiKey and secretKey.
+ * We check if it was provided apiKey and secretKey.
  **/
 var validateUserCredentials = function (userCredentials){
 	if(!userCredentials){
 		 throw "You should inform the user credentials.";
 	 }
 	 var isAuthenticationUsingApiKeys = hasTheUserInformedApiKeys(userCredentials);
-	 var isAuthenticationUsingUsernamePassword = Boolean(userCredentials.username) && Boolean(userCredentials.password) && Boolean(userCredentials.domain);
 	 
-	 if(!isAuthenticationUsingApiKeys && !isAuthenticationUsingUsernamePassword){
-		 throw "You should either inform the (username, password and domain) or (apiKey and secretKey).";
-	 }
-	 if(isAuthenticationUsingUsernamePassword){
-		 throw "Authentication based on username and password is not supported yet.";
+	 if(!isAuthenticationUsingApiKeys){
+		 throw "You should  inform the apiKey and secretKey.";
 	 }
 };
 
@@ -199,6 +195,7 @@ var appendUrlSuffixIfNeeded = function (cloudStackUrl){
 		addParameter: function (paramName, paramValue){
 			var numberOfParameters = this.parameters.length;
 			this.parameters[numberOfParameters] = {name: paramName, value: paramValue};
+			return this;
 			}
 	 };
  };
