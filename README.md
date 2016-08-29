@@ -3,14 +3,13 @@
 This project facilitates the integration of Javascript applications with Apache CloudStack through its API.
 It is a Javascript framework that enables the execution of requests to Apache CloudStack API. If you want to write only a simple script I recommend you using <a href="https://github.com/apache/cloudstack-cloudmonkey">CloudMonkey</a>, instead of this framework. However, if you have the need to write a Javascript application that has to consume Apache CloudStack API, you are welcome to use this framework.
 
-You can find examples on how to use the framework at <a href="https://github.com/Autonomiccs/apache-cloudstack-javascript-client/tree/master/samples/">examples</a>. The usage is as simple as that:
+The latest version can be found at: <a href="https://github.com/Autonomiccs/apache-cloudstack-javascript-client/releases/tag/1.0.0">latest</a>. You can find examples on how to use the framework at <a href="https://github.com/Autonomiccs/apache-cloudstack-javascript-client/tree/master/samples/">examples</a>. There is also a live demo at: <a href="http://files.autonomiccs.com.br/apache-cloudstack-javascript-client/samples/samplePage.html">live demo</a>. The usage is as simple as that:
 
 ```javascript
 
         var secretKey = 'secretKey';
 		var apiKey = 'apiKey';
 		var clientUrl = 'https://cloud.domain.com/client';
-			
 		
 		var apacheCloudStackClient = autonomiccs.createApacheCloudStackClient(clientUrl, {apiKey: apiKey, secretKey: secretKey});
 		
