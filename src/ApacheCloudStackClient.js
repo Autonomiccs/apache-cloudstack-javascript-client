@@ -127,6 +127,9 @@ var executeRequestToCloudSTack = function (apacheCloudStackRequest, apacheCloudS
 		success: function (data, status){
 			requestResult = data;
 		},
+		error:  function (data, status){
+			requestResult = data.responseText;
+		},
 		async: false,
 		cache: true,
 		crossDomain: true,
