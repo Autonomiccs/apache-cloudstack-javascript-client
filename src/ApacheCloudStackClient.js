@@ -99,6 +99,9 @@ var configureRequestExpiration = function (apacheCloudStackClient, apacheCloudSt
 var executeRequestToCloudSTackGetJson = function (apacheCloudStackRequest){
 	apacheCloudStackRequest.addParameter('response', 'json');
 	var resultAsSring = executeRequestToCloudSTack(apacheCloudStackRequest, this);
+	if(jQuery.isPlainObject(resultAsSring)){
+		return resultAsSring;
+	}
 	return JSON.parse(resultAsSring);
 };
 
