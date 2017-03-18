@@ -158,7 +158,10 @@ var validateUserCredentials = function (userCredentials){
 * The returned value is the given URL ending with '/client'
 **/
 var appendUrlSuffixIfNeeded = function (cloudStackUrl){
-	if(cloudStackUrl.endsWith('client') || cloudStackUrl.endsWith('client/')){
+	if(cloudStackUrl.endsWith('client/')){
+		return cloudStackUrl.substring(0, cloudStackUrl.length -1)
+	}
+	if(cloudStackUrl.endsWith('client')){
 			return cloudStackUrl;
 	}
 	if(!cloudStackUrl.endsWith('/')){
