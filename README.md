@@ -8,15 +8,15 @@ The latest version can be found at: <a href="https://github.com/Autonomiccs/apac
 ```javascript
 
         var secretKey = 'secretKey';
-		var apiKey = 'apiKey';
-		var clientUrl = 'https://cloud.domain.com/client';
-		
-		var apacheCloudStackClient = autonomiccs.createApacheCloudStackClient(clientUrl, {apiKey: apiKey, secretKey: secretKey});
-		
-		var apacheCloudStackRequest = autonomiccs.createApacheCloudStackRequest('listClusters');
-		apacheCloudStackRequest.addParameter('name', "clusterName");
-		
-		var result = apacheCloudStackClient.executeRequestGetJson(apacheCloudStackRequest);
+	var apiKey = 'apiKey';
+	var clientUrl = 'https://cloud.domain.com/client';
+	
+	var apacheCloudStackClient = autonomiccs.createApacheCloudStackClient(clientUrl, {apiKey: apiKey, secretKey: secretKey});
+	
+	var apacheCloudStackRequest = autonomiccs.createApacheCloudStackRequest('listClusters');
+	apacheCloudStackRequest.addParameter('name', "clusterName");
+	
+	var result = apacheCloudStackClient.executeRequestGetJson(apacheCloudStackRequest);
 ```
 
 The response is a JSON object. Therefore, you can get the result object and start using it right away. There is also another option `autonomiccs.executeRequest` that returns an XML as a response object.
