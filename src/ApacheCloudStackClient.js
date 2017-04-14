@@ -123,7 +123,7 @@ var executeRequestToCloudSTack = function (apacheCloudStackRequest, apacheCloudS
 			var signature = createSignature(commandString, apacheCloudStackClient.userCredentials);
 			commandString = commandString + '&' + 'signature=' + getAcsUrlEncodedValue(signature);
 	}
-	var urlRequest = apacheCloudStackClient.cloudStackUrl + '/api?' + commandString;
+	var urlRequest = apacheCloudStackClient.cloudStackUrl + '?' + commandString;
 	var requestResult;
 	jQuery.ajax({
 		url: urlRequest, 
@@ -156,23 +156,6 @@ var validateUserCredentials = function (userCredentials){
 	 }
 };
 
-/**
-* This method will append the URL sufix '/client' if needed to the given URL.
-* The returned value is the given URL ending with '/client'
-**/
-var appendUrlSuffixIfNeeded = function (cloudStackUrl){
-	if(cloudStackUrl.endsWith('client/')){
-		return cloudStackUrl.substring(0, cloudStackUrl.length -1)
-	}
-	if(cloudStackUrl.endsWith('client')){
-			return cloudStackUrl;
-	}
-	if(!cloudStackUrl.endsWith('/')){
-			cloudStackUrl = cloudStackUrl + '/';
-	}
-	return cloudStackUrl + 'client';
-};
-
  /**
  * This method creates an Apache CloudStack client with the given user credentials.
  **/
@@ -182,7 +165,6 @@ var appendUrlSuffixIfNeeded = function (cloudStackUrl){
 	if(!cloudStackUrl || !Boolean(jQuery.trim(cloudStackUrl))){
 		throw "You should inform a CloudStack URL.";
 	}
-	cloudStackUrl = appendUrlSuffixIfNeeded(cloudStackUrl);
 	 return {
 		 userCredentials: userCredentials,
 		 cloudStackUrl: cloudStackUrl,
